@@ -1,24 +1,18 @@
-//
-//  IMDBModel.swift
-//  MuviSelcta
-//
-//  Created by Connor Jones on 11/03/2023.
-//
 import Foundation
 
 public struct TitleDetailsResponse: Codable, Identifiable {
     public var id: String
-    var type: String
-    var image: TitlePosterInformation
-    var movieLength: Int
-    var nextEpisode: String?
-    var numberOfEpisodes: Int?
-    var seriesEndYear: Int?
-    var seriesStartYear: Int?
-    var title: String
-    var titleType: TitleType
-    var year: Int
-    var genre: Genre?
+    public var type: String
+    public var image: TitlePosterInformation
+    public var movieLength: Int
+    public var nextEpisode: String?
+    public var numberOfEpisodes: Int?
+    public var seriesEndYear: Int?
+    public var seriesStartYear: Int?
+    public var title: String
+    public var titleType: TitleType
+    public var year: Int
+    public var genre: Genre?
 
     enum CodingKeys: String, CodingKey {
         case type = "@type"
@@ -26,7 +20,7 @@ public struct TitleDetailsResponse: Codable, Identifiable {
         case id, image, nextEpisode, numberOfEpisodes, seriesEndYear, seriesStartYear, title, titleType, year
     }
 
-    init(type: String,image: TitlePosterInformation, id: String, movieLength: Int, nextEpisode: String, numberOfEpisodes: Int, seriesEndYear: Int, seriesStartYear: Int, title: String, titleType: String, year: Int) {
+    public init(type: String,image: TitlePosterInformation, id: String, movieLength: Int, nextEpisode: String, numberOfEpisodes: Int, seriesEndYear: Int, seriesStartYear: Int, title: String, titleType: String, year: Int) {
         self.type = type
         self.titleType = TitleType(rawValue: titleType) ?? .unknown
         self.title = title
@@ -42,10 +36,17 @@ public struct TitleDetailsResponse: Codable, Identifiable {
 }
 
 public struct TitlePosterInformation: Codable {
-    var id: String
-    var url: String
-    var height: Int
-    var width: Int
+    public var id: String
+    public var url: String
+    public var height: Int
+    public var width: Int
+
+    public init(id: String, url: String, height: Int, width: Int) {
+        self.id = id
+        self.url = url
+        self.height = height
+        self.width = width
+    }
 }
 
 public enum TitleType: String, Codable, CaseIterable {

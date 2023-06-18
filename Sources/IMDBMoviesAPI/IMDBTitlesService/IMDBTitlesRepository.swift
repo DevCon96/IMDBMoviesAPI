@@ -1,15 +1,9 @@
-//
-//  IMDBServiceRepository.swift
-//  MuviSelcta
-//
-//  Created by Connor Jones on 11/03/2023.
-//
 
 import Foundation
 
 fileprivate let timeoutInterval = 10.0
 
-protocol IMDBTitlesRespository {
+public protocol IMDBTitlesRespository {
     // Movies/Films
     func getPopularMovies(for genre: Genre, count: Int) async throws -> [String]
     func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse]
@@ -24,7 +18,7 @@ protocol IMDBTitlesRespository {
     func findTitle(for searchString: String) async throws -> [TitleDetailsResponse]
 }
 
-class IMDBTitlesResultsRepository: IMDBTitlesRespository {
+public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
     private static var apiKey: String = Config.main.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
     private static let hostUrl = Config.main.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
     private static let networkProtocol = "https:"
@@ -37,7 +31,7 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
     public func getPopularMovies(for genre: Genre, count: Int) async throws -> [String] {
         var responseData: [String] = []
         let apiMethod = "get-popular-movies-by-genre"
-        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesResultsRepository.hostUrl)/title/v2/\(apiMethod)?genre=\(genre.rawValue)&limit=\(String(count))")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        var request = URLRequest(url: URL(string: "\(IMDBTitlesResultsRepository.hostUrl)/title/v2/\(apiMethod)?genre=\(genre.rawValue)&limit=\(String(count))")!)
 
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
@@ -52,11 +46,6 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
                 .components(separatedBy: ",")
             titleComponents.forEach { responseData.append($0) }
         } catch {
-            log(.error, "Unable to fetch popular movies for \(genre.rawValue)")
-//            AnalyticsManager.logEvent(.errorFetchingPopularMovies, [
-//                "gnere" : genre.rawValue,
-//                "count" : count
-//            ])
             throw MovieSearcherError.noDataFetched
         }
 
@@ -86,8 +75,6 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
             let (data, _) = try await URLSession.shared.data(for: urlRequest as URLRequest)
             result = try? JSONDecoder().decode(TitleDetailsResponse.self, from: data)
         } catch {
-            log(.error, "Data not found from API call")
-//            AnalyticsManager.logEvent(.errorFetchingTitleDetails, ["title" : id])
             throw MovieSearcherError.noDataFetched
         }
 
@@ -107,8 +94,6 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
             let titleComponents = sanatizeTitleData(data)
             titleComponents.forEach { responseData.append($0) }
         } catch {
-            log(.error, "Undable to fetch popular TV shows list")
-//            AnalyticsManager.logEvent(.errorFetchingPopularTvShows, ["count" : count])
             throw MovieSearcherError.noDataFetched
         }
 
@@ -131,7 +116,7 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
         return result
     }
 
-    func getRating(for title: String) async throws -> TitleRatingResponse? {
+    public func getRating(for title: String) async throws -> TitleRatingResponse? {
         var rating: TitleRatingResponse?
 
         let apiMethod = "get-ratings"
@@ -143,9 +128,6 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
             rating = try? JSONDecoder().decode(TitleRatingResponse.self, from: data)
         } catch {
-            log(.error, "Unable to fetch ratings data for titleID(\(title))")
-            let params = [ "title" : title]
-//            AnalyticsManager.logEvent(.errorFetchingRatingsData, params)
             throw MovieSearcherError.noDataFetched
         }
 
@@ -168,8 +150,6 @@ class IMDBTitlesResultsRepository: IMDBTitlesRespository {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
             result = try? JSONDecoder().decode([TitleDetailsResponse].self, from: data)
         } catch {
-            log(.error, "Unable to find any titles ")
-//            AnalyticsManager.logEvent(.errorFindingTitles, ["searchString" : searchString])
             throw MovieSearcherError.noDataFetched
         }
 

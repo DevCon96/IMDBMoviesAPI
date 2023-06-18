@@ -1,5 +1,5 @@
 //
-//  IMDBService.swift
+//  IMDBApiProtocolImp.swift
 //  MuviSelcta
 //
 //  Created by Connor Jones on 11/03/2023.
@@ -7,42 +7,32 @@
 
 import Foundation
 
-public protocol IMDBTitlesService {
+public class IMDBTitlesService: IMDBTitlesServiceProtocol {
+    private var imdbServiceRepository: IMDBTitlesRespository
 
-    /// Fetch details for specific title id
-    /// - Parameter id: The specific identifier for a particular title.
-    func getTitleDetails(for id: String) async throws -> TitleDetailsResponse?
+    public init(imdbServiceRepository: IMDBTitlesRespository) {
+        self.imdbServiceRepository = imdbServiceRepository
+    }
 
-    /// - Description:
-    ///     - Download the most popular movies for a particular genre.
-    /// - Parameters:
-    ///     - genre: The genre of movies to download
-    ///     - count: The number of movies starting with the most popular to (count -1)th most popular movie
-    func getPopularMovies(for genre: Genre, count: Int) async throws -> [String]
 
-    /// - Description:
-    ///     - Download the most popular movies for a particular genre.
-    /// - Parameters:
-    ///     - genre: The genre of movies to download
-    ///     - count: The number of movies starting with the most popular to (count -1)th most popular movie
-    func getPopularTvShows(count: Int) async throws -> [String]
+    public func getPopularMovies(for genre: Genre, count: Int) async throws -> [String] {
+        try await imdbServiceRepository.getPopularMovies(for: genre, count: count)
+    }
 
-    /// - Description:
-    ///     - Download the most popular tv shows for a particular genre.
-    /// - Parameters:
-    ///     - genre: The genre of movies to download
-    ///     - count: The number of shows starting with the most popular to (count -1)th most popular show
-    func getPopularTvShows(count: Int) async throws -> [TitleDetailsResponse]
+    public func getTitleDetails(for id: String) async throws -> TitleDetailsResponse? {
+        try await imdbServiceRepository.getTitleDetails(for: id)
+    }
 
-    /// - Description:
-    ///     - Download the most popular films with given parameters
-    /// - Parameters:
-    ///     - parameters: Dict of key values for paramters
-    func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse]
+    public func getPopularTvShows(count: Int) async throws -> [String] {
+        try await imdbServiceRepository.getPopularTvShowsTitles(count: count)
+    }
 
-    // - Description:
-    ///     - Download the most popular films with given parameters
-    /// - Parameters:
-    ///     - parameters: Dict of key values for paramters
-    ///
+    public func getPopularTvShows(count: Int) async throws -> [TitleDetailsResponse] {
+        try await imdbServiceRepository.getPopularTvShows(count: count)
+    }
+
+    public func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse] {
+        try await imdbServiceRepository.getPopularFilms(with: parmaters)
+    }
+
 }
