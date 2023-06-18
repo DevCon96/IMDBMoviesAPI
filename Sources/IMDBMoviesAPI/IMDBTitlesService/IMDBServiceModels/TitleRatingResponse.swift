@@ -1,26 +1,35 @@
-//
-//  TitleRatingResponse.swift
-//  MuviSelcta
-//
-//  Created by Connor Jones on 12/03/2023.
-//
-
 import Foundation
 
 public struct TitleRatingResponse: Codable {
-    var title: String
-    var titleType: TitleType?
-    var year: Int
-    var otherRanks: OtherRanks?
-    var rating: Float
-    var ratingCount: Int
+    public var title: String
+    public var titleType: TitleType?
+    public var year: Int
+    public var otherRanks: OtherRanks?
+    public var rating: Float
+    public var ratingCount: Int
+
+    public init(title: String, titleType: TitleType? = nil, year: Int, otherRanks: OtherRanks? = nil, rating: Float, ratingCount: Int) {
+        self.title = title
+        self.titleType = titleType
+        self.year = year
+        self.otherRanks = otherRanks
+        self.rating = rating
+        self.ratingCount = ratingCount
+    }
 }
 
 public struct OtherRanks: Codable {
-    var id: String
-    var label: String
-    var rank: Int
-    var rankType: String
+    public var id: String
+    public var label: String
+    public var rank: Int
+    public var rankType: String
+
+    public init(id: String, label: String, rank: Int, rankType: String) {
+        self.id = id
+        self.label = label
+        self.rank = rank
+        self.rankType = rankType
+    }
 }
 
 /*

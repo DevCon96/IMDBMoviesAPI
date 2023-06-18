@@ -8,7 +8,7 @@
 import Foundation
 
 public class IMDBTitlesServiceFactory {
-    public static func titlesService() -> IMDBTitlesService {
-        return IMDBTitlesServiceImpl(imdbServiceRepository: IMDBTitlesResultsRepository())
+    public static func titlesService() -> IMDBTitlesServiceProtocol {
+        return IMDBTitlesService(imdbServiceRepository: IMDBTitlesResultsRepository())
     }
 }
