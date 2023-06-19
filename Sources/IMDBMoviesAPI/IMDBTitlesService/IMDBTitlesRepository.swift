@@ -19,8 +19,8 @@ public protocol IMDBTitlesRespository {
 }
 
 public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
-    private static var apiKey: String = Config.main.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
-    private static let hostUrl = Config.main.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
+    private static var apiKey: String = Config.shared.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
+    private static let hostUrl = Config.shared.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
     private static let networkProtocol = "https:"
 
     private static let headers = [
