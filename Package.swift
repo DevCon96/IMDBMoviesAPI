@@ -23,11 +23,15 @@ let package = Package(
             name: "IMDBMoviesAPI",
             dependencies: [],
             resources: [
-                .process("Resources/Config.json")
+                .process("Resources")
             ]
         ),
         .testTarget(
             name: "IMDBMoviesAPITests",
-            dependencies: ["IMDBMoviesAPI"]),
+            dependencies: ["IMDBMoviesAPI"],
+            resources: [
+                .copy("Resources")
+            ]
+        )
     ]
 )
