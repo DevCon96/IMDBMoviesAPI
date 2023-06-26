@@ -14,7 +14,7 @@ public struct TitleDetailsResponse: Codable, Identifiable {
     public var year: Int
     public var genre: Genre?
 
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case type = "@type"
         case movieLength = "runningTimeInMinutes"
         case id, image, nextEpisode, numberOfEpisodes, seriesEndYear, seriesStartYear, title, titleType, year
