@@ -10,7 +10,7 @@ public struct TitleDetailsResponse: Codable, Identifiable {
     public var seriesEndYear: Int?
     public var seriesStartYear: Int?
     public var title: String
-    public var titleType: TitleType
+    public var titleType: TitleType?
     public var year: Int
     public var genre: Genre?
 
@@ -50,11 +50,11 @@ public struct TitlePosterInformation: Codable {
 }
 
 public enum TitleType: String, Codable, CaseIterable {
-    case film, tvSeries, unknown
+    case movie, tvSeries, unknown
 
     public func toString() -> String? {
         switch self {
-        case .film: return Strings.DownloadNew.filmsSelectorLabel
+        case .movie: return Strings.DownloadNew.filmsSelectorLabel
         case .tvSeries: return Strings.DownloadNew.tvSeriesSelectorLabel
         default: return nil
         }
