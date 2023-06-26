@@ -29,6 +29,23 @@ struct TestData {
     }
     """
 
+    static let details2 = """
+    "{\
+    "@type":"imdb.api.title.title",\
+    "id":"/title/tt27542448/",\
+    "image":{\
+        "height":630,\
+        "id":"/title/tt27542448/images/rm1601054209\",\
+        "url":"https://m.media-amazon.com/images/M/MV5BZTdkMDA5YjktODQzNC00N2VhLTg5NmItOTAwNjg3OTIyYTk3XkEyXkFqcGdeQXVyMTUzOTczNzYx._V1_.jpg",
+        "width":450
+        },
+    "runningTimeInMinutes":103,\
+    "title":"Take Care of Maya",\
+    "titleType":"movie"\
+    ,"year":2023\
+    }"
+    """
+    
     static let popular = """
     [\
       "/title/tt6856242/",\

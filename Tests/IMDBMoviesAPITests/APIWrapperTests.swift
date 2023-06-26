@@ -43,4 +43,21 @@ final class APIWrapperTests: XCTestCase {
         XCTAssertEqual(expectedTitleId, result?.id)
         XCTAssertEqual(expectedImageUrl, result?.image.url)
     }
+
+    func testDecodingDetails2Response() throws {
+        // Given
+        let expectedTitleId = "/title/tt27542448/"
+        let expectedImageUrl = "https://m.media-amazon.com/images/M/MV5BZTdkMDA5YjktODQzNC00N2VhLTg5NmItOTAwNjg3OTIyYTk3XkEyXkFqcGdeQXVyMTUzOTczNzYx._V1_.jpg"
+
+        let decoder = JSONDecoder()
+        let testData = try XCTUnwrap(TestData.details2.data(using: .utf8))
+
+        // When
+        let result = try? decoder.decode(TitleDetailsResponse.self, from: testData)
+
+        // Then
+        XCTAssertNotNil(result)
+        XCTAssertEqual(expectedTitleId, result?.id)
+        XCTAssertEqual(expectedImageUrl, result?.image.url)
+    }
 }
