@@ -2,7 +2,7 @@ import Foundation
 
 public struct TitleDetailsResponse: Codable, Identifiable {
     public var id: String
-    public var type: String
+    public var type: String?
     public var image: TitlePosterInformation
     public var movieLength: Int
     public var nextEpisode: String?
