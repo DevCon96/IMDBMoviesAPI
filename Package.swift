@@ -10,15 +10,16 @@ let package = Package(
         .iOS(.v16)
     ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "IMDBMoviesAPI",
             targets: ["IMDBMoviesAPI"]),
+        .library(
+            name: "IMDBMoviesTestHelper",
+            targets: ["IMDBMoviesTestHelper"]
+        ),
     ],
     dependencies: [],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "IMDBMoviesAPI",
             dependencies: [],
@@ -26,9 +27,13 @@ let package = Package(
                 .process("Resources")
             ]
         ),
+        .target(
+            name: "IMDBMoviesTestHelper",
+            dependencies: ["IMDBMoviesAPI"]
+        ),
         .testTarget(
             name: "IMDBMoviesAPITests",
-            dependencies: ["IMDBMoviesAPI"],
+            dependencies: ["IMDBMoviesAPI", "IMDBMoviesTestHelper"],
             resources: [
                 .copy("Resources")
             ]
