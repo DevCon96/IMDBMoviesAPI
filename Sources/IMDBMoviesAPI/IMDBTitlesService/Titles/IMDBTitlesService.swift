@@ -8,9 +8,9 @@
 import Foundation
 
 public class IMDBTitlesService: IMDBTitlesServiceProtocol {
-    private var imdbServiceRepository: IMDBTitlesRespository
+    private var imdbServiceRepository: IMDBTitlesRespositoryProtocol
 
-    public init(imdbServiceRepository: IMDBTitlesRespository) {
+    public init(imdbServiceRepository: IMDBTitlesRespositoryProtocol) {
         self.imdbServiceRepository = imdbServiceRepository
     }
 

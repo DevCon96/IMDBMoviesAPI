@@ -5,6 +5,6 @@ public class IMDServiceFactory {
     /// - Returns: the configured `IMDBService` ready for use
 
     public static func apiService() -> IMDBTitlesServiceProtocol {
-        IMDBTitlesService(imdbServiceRepository: IMDBTitlesResultsRepository())
+        IMDBTitlesService(imdbServiceRepository: IMDBTitlesRepository())
     }
 }

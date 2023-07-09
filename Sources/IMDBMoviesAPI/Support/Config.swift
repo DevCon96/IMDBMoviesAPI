@@ -6,6 +6,7 @@ public struct Config: Decodable {
     public var imdbUrl: String?
 
     public init() {
+        print("Initalised Config")
         if let url = Bundle.module.url(forResource: "Config", withExtension: "json"){
             do {
                 let data = try Data(contentsOf: url)
