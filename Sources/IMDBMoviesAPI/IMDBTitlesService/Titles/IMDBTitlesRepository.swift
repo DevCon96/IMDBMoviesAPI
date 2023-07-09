@@ -3,7 +3,7 @@ import Foundation
 
 fileprivate let timeoutInterval = 10.0
 
-public protocol IMDBTitlesRespository {
+public protocol IMDBTitlesRespositoryProtocol {
     // Movies/Films
     func getPopularMovies(for genre: Genre, count: Int) async throws -> [String]
     func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse]
@@ -14,16 +14,17 @@ public protocol IMDBTitlesRespository {
 
     // Common
     func getTitleDetails(for id: String) async throws -> TitleDetailsResponse?
-    func getRating(for title: String) async throws -> TitleRatingResponse?
     func findTitle(for searchString: String) async throws -> [TitleDetailsResponse]
 }
 
-public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
-    private static var apiKey: String = Config.shared.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
-    private static let hostUrl = Config.shared.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
-    private static let networkProtocol = "https://"
+public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
 
-    private static let headers = [
+
+    static var apiKey: String = Config.shared.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
+    static let hostUrl = Config.shared.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
+    static let networkProtocol = "https://"
+
+    static let headers = [
         "X-RapidAPI-Key": apiKey,
         "X-RapidAPI-Host": hostUrl.replacingOccurrences(of: networkProtocol, with: "")
     ]
@@ -31,10 +32,10 @@ public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
     public func getPopularMovies(for genre: Genre, count: Int) async throws -> [String] {
         var responseData: [String] = []
         let apiMethod = "get-popular-movies-by-genre"
-        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesResultsRepository.hostUrl)/title/v2/\(apiMethod)?genre=\(genre.rawValue)&limit=\(String(count))")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesRepository.hostUrl)/title/v2/\(apiMethod)?genre=\(genre.rawValue)&limit=\(String(count))")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
 
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
+        request.allHTTPHeaderFields = IMDBTitlesRepository.headers
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
@@ -58,15 +59,15 @@ public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
 
         var urlRequest: URLRequest?
 
-        guard let url = URL(string: "\(IMDBTitlesResultsRepository.hostUrl)/title/\(apiMethod)?tconst=\(id)") else {
+        guard let url = URL(string: "\(IMDBTitlesRepository.hostUrl)/title/\(apiMethod)?tconst=\(id)") else {
             return nil
         }
 
         urlRequest = URLRequest(url: url,
                                 cachePolicy: .useProtocolCachePolicy,
                                 timeoutInterval: timeoutInterval)
-        print("\(IMDBTitlesResultsRepository.hostUrl)/title/\(apiMethod)?tconst=\(id)")
-        urlRequest?.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
+        print("\(IMDBTitlesRepository.hostUrl)/title/\(apiMethod)?tconst=\(id)")
+        urlRequest?.allHTTPHeaderFields = IMDBTitlesRepository.headers
         urlRequest?.httpMethod = "GET"
 
         guard let urlRequest else { return  nil }
@@ -84,10 +85,10 @@ public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
     public func getPopularTvShowsTitles(count: Int) async throws -> [String] {
         var responseData: [String] = []
         let apiMethod = "get-most-popular-tv-shows"
-        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesResultsRepository.hostUrl)/title/v2/\(apiMethod)?homeCountry=US&purchaseCountry=US&currentCountry=US")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesRepository.hostUrl)/title/v2/\(apiMethod)?homeCountry=US&purchaseCountry=US&currentCountry=US")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
 
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
+        request.allHTTPHeaderFields = IMDBTitlesRepository.headers
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
@@ -116,23 +117,7 @@ public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
         return result
     }
 
-    public func getRating(for title: String) async throws -> TitleRatingResponse? {
-        var rating: TitleRatingResponse?
 
-        let apiMethod = "get-ratings"
-        let request = NSMutableURLRequest(url: URL(string: "\(IMDBTitlesResultsRepository.hostUrl)/\(apiMethod)?tconst=\(title)")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
-
-        do {
-            let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
-            rating = try? JSONDecoder().decode(TitleRatingResponse.self, from: data)
-        } catch {
-            throw MovieSearcherError.noDataFetched
-        }
-
-        return rating
-    }
 
     public func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse] {
         return []
@@ -142,9 +127,9 @@ public class IMDBTitlesResultsRepository: IMDBTitlesRespository {
         var result: [TitleDetailsResponse]?
 
         let apiMethod = "find"
-        let request = NSMutableURLRequest(url: URL(string: "\(IMDBTitlesResultsRepository.hostUrl)/\(apiMethod)?q=\(searchString)")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        let request = NSMutableURLRequest(url: URL(string: "\(IMDBTitlesRepository.hostUrl)/\(apiMethod)?q=\(searchString)")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
         request.httpMethod = "GET"
-        request.allHTTPHeaderFields = IMDBTitlesResultsRepository.headers
+        request.allHTTPHeaderFields = IMDBTitlesRepository.headers
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)

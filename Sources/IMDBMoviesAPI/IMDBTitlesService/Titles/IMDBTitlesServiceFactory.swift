@@ -9,6 +9,6 @@ import Foundation
 
 public class IMDBTitlesServiceFactory {
     public static func titlesService() -> IMDBTitlesServiceProtocol {
-        return IMDBTitlesService(imdbServiceRepository: IMDBTitlesResultsRepository())
+        return IMDBTitlesService(imdbServiceRepository: IMDBTitlesRepository())
     }
 }

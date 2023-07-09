@@ -1,28 +1,32 @@
 import Foundation
 
 public struct TitleRatingResponse: Codable {
+    public var id: String
     public var title: String
-    public var titleType: TitleType?
+    public var titleType: TitleType
     public var year: Int
-    public var otherRanks: OtherRanks?
+//    public var otherRanks: [OtherRanks]? // Not decoding
     public var rating: Float
     public var ratingCount: Int
+//    public var ratingsHistograms: [GroupData]? // Not decoding
 
-    public init(title: String, titleType: TitleType? = nil, year: Int, otherRanks: OtherRanks? = nil, rating: Float, ratingCount: Int) {
+    public init(id: String, title: String, titleType: TitleType, year: Int, otherRanks: [OtherRanks]?, rating: Float, ratingCount: Int, ratingsHistograms: [GroupData]?) {
+        self.id = id
         self.title = title
         self.titleType = titleType
         self.year = year
-        self.otherRanks = otherRanks
+//        self.otherRanks = otherRanks
         self.rating = rating
         self.ratingCount = ratingCount
+//        self.ratingsHistograms = ratingsHistograms
     }
 }
 
 public struct OtherRanks: Codable {
-    public var id: String
-    public var label: String
-    public var rank: Int
-    public var rankType: String
+    public var id: String?
+    public var label: String?
+    public var rank: Int?
+    public var rankType: String?
 
     public init(id: String, label: String, rank: Int, rankType: String) {
         self.id = id
@@ -32,6 +36,61 @@ public struct OtherRanks: Codable {
     }
 }
 
+public struct GroupData: Codable {
+    public var aggregateRating: Float
+    public var demographic: String
+    public var histogram: [String : Int]
+    public var totalRatings: Int
+
+    public init(aggregateRating: Float, demographic: String, histogram: [String : Int] = [:], totalRatings: Int) {
+        self.aggregateRating = aggregateRating
+        self.demographic = demographic
+        self.histogram = histogram
+        self.totalRatings = totalRatings
+    }
+}
+
+public struct HistogramData: Codable {
+    public var oneStarTotal: Int?
+    public var twoStarTotal: Int?
+    public var threeStarTotal: Int?
+    public var fourStarTotal: Int?
+    public var fiveStarTotal: Int?
+    public var sixStarTotal: Int?
+    public var sevenStarTotal: Int?
+    public var eightStarTotal: Int?
+    public var nineStarTotal: Int?
+    public var tenStarTotal: Int?
+
+    public var data: [Int?] {
+         [
+            oneStarTotal,
+            twoStarTotal,
+            threeStarTotal,
+            fourStarTotal,
+            fiveStarTotal,
+            fiveStarTotal,
+            sixStarTotal,
+            sevenStarTotal,
+            eightStarTotal,
+            nineStarTotal,
+            tenStarTotal
+         ]
+    }
+
+    public enum CodingKeys: String, CodingKey {
+        case oneStarTotal = "1"
+        case twoStarTotal = "2"
+        case threeStarTotal = "3"
+        case fourStarTotal = "4"
+        case fiveStarTotal = "5"
+        case sixStarTotal = "6"
+        case sevenStarTotal = "7"
+        case eightStarTotal = "8"
+        case nineStarTotal = "9"
+        case tenStarTotal = "10"
+    }
+}
 /*
  {
    "@type": "imdb.api.title.ratings",
