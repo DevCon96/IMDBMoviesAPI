@@ -3,15 +3,15 @@ import Foundation
 public struct TitleDetailsResponse: Codable, Identifiable {
     public var id: String
     public var type: String?
-    public var image: TitlePosterInformation
-    public var movieLength: Int
+    public var image: TitlePosterInformation?
+    public var movieLength: Int?
     public var nextEpisode: String?
     public var numberOfEpisodes: Int?
     public var seriesEndYear: Int?
     public var seriesStartYear: Int?
     public var title: String
     public var titleType: TitleType?
-    public var year: Int
+    public var year: Int?
     public var genre: Genre?
 
     public enum CodingKeys: String, CodingKey {
@@ -50,12 +50,16 @@ public struct TitlePosterInformation: Codable {
 }
 
 public enum TitleType: String, Codable, CaseIterable {
-    case movie, tvSeries, unknown
+    case movie, tvSeries, tvMovie, video, videoGame, podcastSeries, unknown
 
     public func toString() -> String? {
         switch self {
         case .movie: return Strings.DownloadNew.filmsSelectorLabel
         case .tvSeries: return Strings.DownloadNew.tvSeriesSelectorLabel
+        case .video: return Strings.DownloadNew.videosSelectorLabel
+        case .tvMovie: return Strings.DownloadNew.tvMovieSelectorLabel
+        case .videoGame: return Strings.DownloadNew.videoGameSelectorLabel
+        case .podcastSeries: return Strings.DownloadNew.podcastSeriesSelectorLabel
         default: return nil
         }
     }
