@@ -14,7 +14,7 @@ public protocol IMDBTitlesRespositoryProtocol {
 
     // Common
     func getTitleDetails(for id: String) async throws -> TitleDetailsResponse?
-    func findTitle(for searchString: String) async throws -> [TitleDetailsResponse]
+    func findTitle(for searchString: String) async throws -> SearchResultResponse?
 }
 
 public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
@@ -123,22 +123,24 @@ public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
         return []
     }
 
-    public func findTitle(for searchString: String) async throws -> [TitleDetailsResponse] {
-        var result: [TitleDetailsResponse]?
-
+    public func findTitle(for searchString: String) async throws -> SearchResultResponse? {
+        var result: SearchResultResponse?
+        let sanitizedSearchString = searchString.replacingOccurrences(of: " ", with: "%20")
+        
         let apiMethod = "find"
-        let request = NSMutableURLRequest(url: URL(string: "\(IMDBTitlesRepository.hostUrl)/\(apiMethod)?q=\(searchString)")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        let request = NSMutableURLRequest(url: URL(string: "\(IMDBTitlesRepository.hostUrl)/title/\(apiMethod)?q=\(sanitizedSearchString)")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = IMDBTitlesRepository.headers
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
-            result = try? JSONDecoder().decode([TitleDetailsResponse].self, from: data)
+            let jsonData = String(data: data, encoding: .utf8)
+            result = try? JSONDecoder().decode(SearchResultResponse.self, from: data)
         } catch {
             throw MovieSearcherError.noDataFetched
         }
 
-        return result ?? []
+        return result
     }
 
     private func sanatizeTitleData(_ titleData: Data) -> [String] {

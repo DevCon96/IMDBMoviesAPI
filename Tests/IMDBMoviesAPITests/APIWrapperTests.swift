@@ -41,7 +41,7 @@ final class APIWrapperTests: XCTestCase {
         // Then
         XCTAssertNotNil(result)
         XCTAssertEqual(expectedTitleId, result?.id)
-        XCTAssertEqual(expectedImageUrl, result?.image.url)
+        XCTAssertEqual(expectedImageUrl, result?.image?.url)
     }
 
     func testDecodingDetails2Response() throws {
@@ -58,6 +58,6 @@ final class APIWrapperTests: XCTestCase {
         // Then
         XCTAssertNotNil(result)
         XCTAssertEqual(expectedTitleId, result?.id)
-        XCTAssertEqual(expectedImageUrl, result?.image.url)
+        XCTAssertEqual(expectedImageUrl, result?.image?.url)
     }
 }
