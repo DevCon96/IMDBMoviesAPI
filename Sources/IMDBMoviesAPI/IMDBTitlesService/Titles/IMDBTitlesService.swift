@@ -34,5 +34,9 @@ public class IMDBTitlesService: IMDBTitlesServiceProtocol {
     public func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse] {
         try await imdbServiceRepository.getPopularFilms(with: parmaters)
     }
+    
+    public func find(_ searchTerm: String) async throws -> SearchResultResponse? {
+        try await imdbServiceRepository.findTitle(for: searchTerm)
+    }
 
 }

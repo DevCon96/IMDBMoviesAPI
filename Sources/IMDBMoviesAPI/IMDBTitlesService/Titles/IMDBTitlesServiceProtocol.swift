@@ -28,8 +28,10 @@ public protocol IMDBTitlesServiceProtocol {
     func getPopularTvShows(count: Int) async throws -> [String]
 
     // - Description:
-    ///     - Download the most popular films with given parameters
+    ///     - Find titles with given search term. Will return a result with a results value containing all titles
     /// - Parameters:
-    ///     - parameters: Dict of key values for paramters
+    ///     - searchTerm: The actual search term string to find titles with matching words.
     ///
+    ///
+    func find(_ searchTerm: String) async throws -> SearchResultResponse?
 }
