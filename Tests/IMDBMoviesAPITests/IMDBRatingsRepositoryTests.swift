@@ -24,7 +24,8 @@ final class IMDBRatingsRepositoryTests: XCTestCase {
         let expectedTitleName = "Take Care of Maya"
         let expectedTitleType: TitleType = .movie
         let expectedYear: Int = 2023
-        let expectdRating: Float = 7.9
+        // Rating can change
+//        let expectdRating: Float = 7.9
 
         var result: TitleRatingResponse?
 
@@ -42,7 +43,8 @@ final class IMDBRatingsRepositoryTests: XCTestCase {
             XCTAssertEqual(testTitleId, result.id)
             XCTAssertEqual(expectedTitleType, result.titleType)
             XCTAssertEqual(expectedYear, result.year)
-            XCTAssertEqual(expectdRating, result.rating)
+            // Rating can change
+//            XCTAssertEqual(expectdRating, result.rating)
         } else {
             XCTFail()
         }

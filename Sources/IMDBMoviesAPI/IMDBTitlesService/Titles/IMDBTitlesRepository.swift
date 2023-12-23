@@ -9,8 +9,8 @@ public protocol IMDBTitlesRespositoryProtocol {
     func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse]
 
     // TV Shows
-    func getPopularTvShowsTitles(count: Int) async throws -> [String]
-    func getPopularTvShows(count: Int) async throws -> [TitleDetailsResponse]
+    func getPopularTvShowsTitles() async throws -> [String]
+    func getPopularTvShows() async throws -> [TitleDetailsResponse]
 
     // Common
     func getTitleDetails(for id: String) async throws -> TitleDetailsResponse?
@@ -18,10 +18,9 @@ public protocol IMDBTitlesRespositoryProtocol {
 }
 
 public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
-
-
-    static var apiKey: String = Config.shared.imdbApiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
-    static let hostUrl = Config.shared.imdbUrl ?? ""//"imdb8.p.rapidapi.com"
+    static let versionId = "v2"
+    static var apiKey: String = Config.shared.apiKey ?? "" //"f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
+    static let hostUrl = Config.shared.rootUrl ?? ""//"imdb8.p.rapidapi.com"
     static let networkProtocol = "https://"
 
     static let headers = [
@@ -82,10 +81,10 @@ public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
         return result
     }
 
-    public func getPopularTvShowsTitles(count: Int) async throws -> [String] {
+    public func getPopularTvShowsTitles() async throws -> [String] {
         var responseData: [String] = []
         let apiMethod = "get-most-popular-tv-shows"
-        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesRepository.hostUrl)/title/v2/\(apiMethod)?homeCountry=US&purchaseCountry=US&currentCountry=US")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
+        let request = NSMutableURLRequest(url: NSURL(string: "\(IMDBTitlesRepository.hostUrl)/title/\(apiMethod)?homeCountry=UK&purchaseCountry=UK&currentCountry=UK")! as URL, cachePolicy: .useProtocolCachePolicy, timeoutInterval: timeoutInterval)
 
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = IMDBTitlesRepository.headers
@@ -102,10 +101,10 @@ public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
 
     }
 
-    public func getPopularTvShows(count: Int) async throws -> [TitleDetailsResponse] {
+    public func getPopularTvShows() async throws -> [TitleDetailsResponse] {
         var result: [TitleDetailsResponse] = []
 
-        let popularShows = try await self.getPopularTvShowsTitles(count: count)
+        let popularShows = try await self.getPopularTvShowsTitles()
 
         for show in popularShows {
             let titleDetails = try await self.getTitleDetails(for: show)
@@ -134,7 +133,6 @@ public class IMDBTitlesRepository: IMDBTitlesRespositoryProtocol {
 
         do {
             let (data, _) = try await URLSession.shared.data(for: request as URLRequest)
-            let jsonData = String(data: data, encoding: .utf8)
             result = try? JSONDecoder().decode(SearchResultResponse.self, from: data)
         } catch {
             throw MovieSearcherError.noDataFetched

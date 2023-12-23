@@ -9,6 +9,24 @@ import Foundation
 @testable import IMDBMoviesAPI
 
 class StubIMDBTitlesService: IMDBTitlesServiceProtocol {
+    var invokedFindTitleDetails = false
+    var invokedFindTitleDetailsCount = 0
+    var invokedFindTitleDetailsParameters: (searchTerm: String, Void)?
+    var invokedFindTitleDetailsParametersList = [(searchTerm: String, Void)]()
+    var stubbedFindTitlesDetails: SearchResultResponse!
+    var stubbedFindTitleDetailsErrorReturn: Error!
+    var findTitleDetailsShouldError: Bool = false
+    
+    func find(_ searchTerm: String) async throws -> SearchResultResponse? {
+        guard !findTitleDetailsShouldError else { throw stubbedFindTitleDetailsErrorReturn }
+        invokedFindTitleDetails = true
+        invokedFindTitleDetailsCount += 1
+        invokedFindTitleDetailsParameters = (searchTerm, ())
+        invokedGetTitleDetailsParametersList.append((searchTerm, ()))
+        return stubbedFindTitlesDetails
+        
+    }
+    
 
     var invokedGetTitleDetails = false
     var invokedGetTitleDetailsCount = 0
@@ -46,18 +64,14 @@ class StubIMDBTitlesService: IMDBTitlesServiceProtocol {
 
     var invokedGetPopularTvShows = false
     var invokedGetPopularTvShowsCount = 0
-    var invokedGetPopularTvShowsParameters: (count: Int, Void)?
-    var invokedGetPopularTvShowsParametersList = [(count: Int, Void)]()
     var stubbedGetPopularShows: [String]!
     var stubbedGetPopularTvShowsErrorReturn: Error!
     var getPopularTvShowsShouldError: Bool = false
 
-    func getPopularTvShows(count: Int) async throws -> [String]  {
+    func getPopularTvShows() async throws -> [String]  {
         guard !getPopularTvShowsShouldError else { throw stubbedGetPopularTvShowsErrorReturn }
         invokedGetPopularTvShows = true
         invokedGetPopularTvShowsCount += 1
-        invokedGetPopularTvShowsParameters = (count, ())
-        invokedGetPopularTvShowsParametersList.append((count, ()))
         return stubbedGetPopularShows
     }
 }

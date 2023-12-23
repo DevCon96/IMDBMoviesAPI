@@ -25,7 +25,7 @@ public protocol IMDBTitlesServiceProtocol {
     /// - Parameters:
     ///     - genre: The genre of movies to download
     ///     - count: The number of movies starting with the most popular to (count -1)th most popular movie
-    func getPopularTvShows(count: Int) async throws -> [String]
+    func getPopularTvShows() async throws -> [String]
 
     // - Description:
     ///     - Find titles with given search term. Will return a result with a results value containing all titles

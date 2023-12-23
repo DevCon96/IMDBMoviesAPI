@@ -23,12 +23,12 @@ public class IMDBTitlesService: IMDBTitlesServiceProtocol {
         try await imdbServiceRepository.getTitleDetails(for: id)
     }
 
-    public func getPopularTvShows(count: Int) async throws -> [String] {
-        try await imdbServiceRepository.getPopularTvShowsTitles(count: count)
+    public func getPopularTvShows() async throws -> [String] {
+        try await imdbServiceRepository.getPopularTvShowsTitles()
     }
 
-    public func getPopularTvShows(count: Int) async throws -> [TitleDetailsResponse] {
-        try await imdbServiceRepository.getPopularTvShows(count: count)
+    public func getPopularTvShows() async throws -> [TitleDetailsResponse] {
+        try await imdbServiceRepository.getPopularTvShows()
     }
 
     public func getPopularFilms(with parmaters: [String : String]) async throws -> [TitleDetailsResponse] {

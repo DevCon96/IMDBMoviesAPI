@@ -1,6 +1,8 @@
 //
-//  File.swift
+//  APIWraperTests.swift
 //  !!! Warning - These tests call apis and are therefore integration tests
+//  These tests are to enfore documentation of the json data structure so
+//  a local version of the format is stored and maintained
 //
 //  Created by Connor Jones on 26/06/2023.
 //
