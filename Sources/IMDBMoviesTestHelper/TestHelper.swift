@@ -21,4 +21,22 @@ public class TestHelper {
 
         return rating
     }
+    
+    public static func title() -> TitleDetailsResponse {
+        let image = TitlePosterInformation(id: "image",
+                                           url: "url",
+                                           height: 150,
+                                           width: 150)
+        return TitleDetailsResponse(type: "film",
+                                    image: image,
+                                    id: "tt00000001",
+                                    movieLength: 120,
+                                    nextEpisode: "tt00000002", 
+                                    numberOfEpisodes: 12,
+                                    seriesEndYear: 2023,
+                                    seriesStartYear: 2020,
+                                    title: "Moovie",
+                                    titleType: "film",
+                                    year: 2023)
+    }
 }

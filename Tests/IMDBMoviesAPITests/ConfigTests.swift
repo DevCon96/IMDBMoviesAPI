@@ -14,7 +14,7 @@ final class ConfigTests: XCTestCase {
         let expectedUrl = "https://imdb8.p.rapidapi.com"
         let expectedApiKey = "f00295303dmsh8abbb960a723b5cp15819fjsnfe700d92d7ad"
 
-        XCTAssertEqual(expectedUrl, Config.shared.imdbUrl)
-        XCTAssertEqual(expectedApiKey, Config.shared.imdbApiKey)
+        XCTAssertEqual(expectedUrl, Config.shared.rootUrl)
+        XCTAssertEqual(expectedApiKey, Config.shared.apiKey)
     }
 }

@@ -2,8 +2,10 @@ import Foundation
 
 public struct Config: Decodable {
     public static let shared: Config = Config()
-    public var imdbApiKey: String?
-    public var imdbUrl: String?
+    public var apiKey: String?
+    public var rootUrl: String?
+    
+    public var imdbConfig: IMDBConfig?
 
     public init() {
         print("Initalised Config")
@@ -16,4 +18,11 @@ public struct Config: Decodable {
             }
         }
     }
+}
+
+public struct IMDBConfig: Decodable {
+    public let findPath: String
+    public let titlesPath: String
+    public let actorsPath: String
+    public let mostPopularPath: String
 }
