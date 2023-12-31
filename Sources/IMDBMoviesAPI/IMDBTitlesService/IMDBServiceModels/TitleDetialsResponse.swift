@@ -50,7 +50,7 @@ public struct TitlePosterInformation: Codable {
 }
 
 public enum TitleType: String, Codable, CaseIterable {
-    case movie, tvSeries, tvMovie, video, videoGame, podcastSeries, unknown
+    case movie, tvSeries, tvMovie, tvSpecial, video, videoGame, podcastSeries, unknown
 
     public func toString() -> String? {
         switch self {
@@ -60,6 +60,7 @@ public enum TitleType: String, Codable, CaseIterable {
         case .tvMovie: return Strings.DownloadNew.tvMovieSelectorLabel
         case .videoGame: return Strings.DownloadNew.videoGameSelectorLabel
         case .podcastSeries: return Strings.DownloadNew.podcastSeriesSelectorLabel
+        case .tvSpecial: return Strings.DownloadNew.podcastSeriesSelectorLabel
         default: return nil
         }
     }

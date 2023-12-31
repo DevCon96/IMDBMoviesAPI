@@ -15,5 +15,6 @@ internal enum Strings {
         static let tvMovieSelectorLabel = "TV Movie"
         static let videoGameSelectorLabel = "Video Game"
         static let podcastSeriesSelectorLabel = "Podcast"
+        static let tvSpecialSeriesSelectorLabel = "TV Special"
     }
 }
